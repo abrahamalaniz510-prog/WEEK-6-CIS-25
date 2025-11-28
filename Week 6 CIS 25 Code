@@ -1,0 +1,75 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+// Item struct stores a name and an ID
+struct Item {
+    string name;
+    int id;
+};
+
+// Binary search function
+int binarySearch(Item* arr, int size, int targetId) {
+    int left = 0;
+    int right = size - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid].id == targetId)
+            return mid;            // Found the item
+        else if (arr[mid].id < targetId)
+            left = mid + 1;        // Look in right half
+        else
+            right = mid - 1;       // Look in left half
+    }
+
+    return -1; // Not found
+}
+
+int main() {
+    const int SIZE = 100;
+
+    // Dynamically allocate array of Items
+    Item* inventory = new Item[SIZE];
+
+    // Fill array with simple sample data
+    for (int i = 0; i < SIZE; i++) {
+        inventory[i].id = 1000 + i;                // IDs from 1000–1099
+        inventory[i].name = "Item_" + to_string(i);
+    }
+
+    // Sort by ID so binary search can work
+    sort(inventory, inventory + SIZE,
+         [](const Item& a, const Item& b) {
+             return a.id < b.id;
+         });
+
+    // Automatically display valid search range
+    cout << "Valid ID range: "
+         << inventory[0].id << " to "
+         << inventory[SIZE - 1].id << endl;
+
+    // Ask user for an ID to search
+    int searchId;
+    cout << "Enter an ID to search for: ";
+    cin >> searchId;
+
+    // Perform binary search
+    int index = binarySearch(inventory, SIZE, searchId);
+
+    // Display result
+    if (index != -1) {
+        cout << "\nItem found:\n";
+        cout << "Name: " << inventory[index].name << endl;
+        cout << "ID: " << inventory[index].id << endl;
+    } else {
+        cout << "\nItem not found.\n";
+    }
+
+    // Free memory
+    delete[] inventory;
+
+    return 0;
+}
