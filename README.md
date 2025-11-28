@@ -8,7 +8,7 @@ It creates a list of inventory items on the heap using new, fills the array with
 
 
 
-Uses a `struct` to store an item's name and ID
+Uses a struct to store an item's name and ID
  Dynamically allocates an array using new
  Populates the array with 100 inventory items
  Automatically displays the valid ID range
